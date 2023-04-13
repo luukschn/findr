@@ -1,0 +1,105 @@
+/* General */
+a {
+    text-decoration:none;
+    color:black;
+}
+
+li {
+    list-style:none;
+    padding:5%;
+}
+
+body {
+    font-family: monospace;
+    font-size:110%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Header */
+#header-container {
+    background-color: #a9e9a9;
+    /* padding: none; */
+    border: none;
+    /* margin: none; */
+    /* display: block; */
+    border-color:transparent;
+    width:100%;
+    text-align:center;
+}
+#header-content {
+    /* margin:auto; */
+    border:3px;
+    padding:10px;
+    display:inline-block;
+}
+
+#header-home-link img {
+    margin:auto;
+    width:100%;
+    max-width:4%;
+    padding-top:2%;
+    /* display:inline-block; */
+}
+
+#header-links-container a {
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top:1%;
+    padding-bottom:1%;
+    border:1%;
+    text-align:center;
+    margin:auto;
+    /* display: inline-block; */
+}
+
+#header-links-container a:hover{
+    background-color: #89be89;
+}
+
+
+/* Footer */
+#footer-container {
+    background-color: rgb(201, 201, 201);
+    padding:0%;
+    border:none;
+    width: 100%;
+    text-align: center;
+}
+
+#footer-links {
+    border:5px;
+    position:relative;
+    width: 15%;
+    height:auto;
+    margin:0 auto;
+} 
+
+
+/* Main content */
+#main-content-container {
+    /* border: 2%; */
+    margin: auto;
+    width:50%;
+    padding:10px;
+}
+
+.inline-block-child {
+    display: inline-block;
+    padding-block: 3%;
+}
+
+#friend-listings {
+    border-color:black;
+    border-style:solid;
+    display: flex;
+    gap: 3px relative;
+    cursor: pointer;
+}
+#friend-listings tr:hover {
+    background-color: darkgray;
+}
