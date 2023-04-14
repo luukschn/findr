@@ -12,12 +12,17 @@
     <p id="scale-reference" class="small">Source:<br>{{ $scale['reference'] }}</p>
 
 
+
     <div id="questionnaire">
         <form 
             id="scale"
             method="post"
             action="{{ url('/submit-scale') }}">
             @csrf
+
+            <input type="hidden" name="internalName" value="{{ $scale['internalName'] }}" />
+            <input type="hidden" name="questionCount" value="{{ count($scale['questions']) }}" />
+            <input type="hidden" name="optionCount" value="{{ $scale['option-count'] }}"
 
             <div id="scale-questions">
                 <?php
@@ -39,6 +44,9 @@
 
                             echo "<div class='form-check form-check-inline'>";
                             echo "<input class='form-check-input' type='radio' name='" . $scale['internalName'] . "-" . $key . "' value='" . $i . "' required/>";
+
+                            //probably not the best way of sending this information, but oh well. 
+                            echo "<input type='hidden' name='" . $scale['internalName'] . "-format-" . $key . "' value='" . $question['format'] . "'/>";
 
                             //need to devise a way to dynamically spread the options evenly if options are fewer than the count of radio buttons
 
