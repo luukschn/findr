@@ -14,9 +14,6 @@ class UserRegistrationRequest extends FormRequest
      */
     public function authorize()
     {
-        if (!Auth::check()) {
-            return false;
-        }
         return true;
     }
 

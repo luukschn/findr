@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Scale;
 use App\Models\ScaleResult;
+use Illuminate\Support\Facades\Auth;
 
 class ScaleController extends Controller
 {
@@ -27,14 +28,33 @@ class ScaleController extends Controller
             } else {
                 //format reversed, values have to be reversed
 
-
-                //ineffective reversal method. What happens if there are 7 options?
-                //or scale 1-100?
-                // $request->input($internal_name . "-" . $i);
-
-                //make algorithm which can reverse the inputs based on $option-count
+                //TODO make reversal function separate  
+                $result += $option_count - (int)$request->input($internal_name . "-" . $i) + 1;
             }
         }
+
+        //ScaleResult table processing
+        if (ScaleResult::where('userId', Auth::id())->exists()) {
+            $scaleResult = ScaleResult::where('userId', Auth::id())->first();
+            $scaleResult->update(['score', $result]);
+        } else {
+            ScaleResult::insert(['score', $result]);
+        }
+
+        $scaleId = $scaleResult->scaleId;
+        
+
+        //scales table processing
+        if (Scale::where('scaleId', $scaleId)->where('userId', Auth::id())->exists()) {
+            $scale = Scale::where('scaleId', $scaleId)->where('userId', Auth::id())->first();
+            $completedCount = $scale->update['completedCount'] += 1;
+
+            //figure out how to update running average based on one additional variable.
+            //also have to take in to account that the first input will be null / 0
+        } else {
+            //finish else clause
+        }
+        
 
     }
 }

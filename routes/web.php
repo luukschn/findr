@@ -28,6 +28,9 @@ Route::get('about', function () {
     return view('about');
 });
 
+// Route::get('/token', function (Request $request) {
+// })
+
 // Route::post('submit-scale', [ScaleController::class, 'submit']); //need to ensure that this can parse information dynamically and that it cannot parse content via a normal post request which doesnt
 // fit the scale formats
 
@@ -54,7 +57,18 @@ Route::get('register', function () {
     }
 });
 //TODO: check again if this is proper structure for posting or if there are better ways
-Route::post('user/register', [RegistrationController::class, 'submitRegistration']);
+// Route::group(['middleware' => 'web'], function() {
+//     Route::post('user/register', [RegistrationController::class, 'submitRegistration'])->middleware('csrf');
+// });
+// Route::post('user/register', [RegistrationController::class, 'submitRegistration'])->middleware('csrf');
+// Route::post('user/register', [RegistrationController::class, 'submitRegistration']);
+// Route::group(['middleware' => 'web'], function() {
+//     Route::post('user/register', [RegistrationController::class, 'submitRegistration'])->middleware('csrf');
+// });
+Route::middleware('web')->group(function () {
+    Route::post('user/register', [RegistrationController::class, 'submitRegistration']);
+});
+
 
 // Route::middleware(['auth'])->group(function() {
     

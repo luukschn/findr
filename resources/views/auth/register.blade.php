@@ -9,6 +9,8 @@
         <form action="/user/register" method="post" class="registration_form">
             @csrf
 
+            {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+
             <table class="registration-form">
                 <tr>
                     <td>Email</td>

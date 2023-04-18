@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<head 
+
 @section('title', 'Template')
 
 @section('content')
@@ -19,6 +21,8 @@
             method="post"
             action="{{ url('/submit-scale') }}">
             @csrf
+
+            {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 
             <input type="hidden" name="internalName" value="{{ $scale['internalName'] }}" />
             <input type="hidden" name="questionCount" value="{{ count($scale['questions']) }}" />

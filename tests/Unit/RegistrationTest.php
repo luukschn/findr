@@ -4,16 +4,12 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helpers\TestHelpers;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
     public function test_view_registration_page()
     {
         $response = $this->get('/register');
@@ -25,35 +21,33 @@ class RegistrationTest extends TestCase
     public function test_register_user_success() {
 
         //TODO write a helper function go generate the CSRF token
-        // $app = $this->app;
-        // $response = $this->get('/');
+        $response = $this->get('/register');
 
         // // Set the token on the session to allow the request to be authenticated
+        $regex = '/<input type="hidden" name="_token" value="(.+)"/';
+        preg_match($regex, $response->getContent(), $matches);
+        $token = $matches[0];
 
-        // //both return empty arrays.
-        // $regex = '/<input type="hidden" name="_token" value="(.+)"/';
-        // // $regex = '/<meta name="csrf-token" content="(.*)">/';
-        // preg_match($regex, $response->getContent(), $matches);
-        // info($matches);
-        // $token = $matches[1];
+        // // Set the token on the session to allow the request to be authenticated
+        $session = $this->app->make('session');
+        $session->start();
+        $session->put('_token', $token);        
+        
 
-        // Set the token on the session to allow the request to be authenticated
-        // $session = $app->make('session');
-        // $session->start();
-        // $session->put('_token', $token);
-
-
+        //TODO: fix the use of helper functions
+        //TestHelpers::get_csrf_token();
 
         $registration_data = [
             'email' => 'a@b.com', 
             'name' => 'Luuk',
             'password' => 'secret',
+            '_token' => $token
         ];
 
         // $response = $this->withSession(['_token' => csrf_token()])->post('/user/register', $registration_data);
-        $response = $this->post('user/register', $registration_data);
+        $postResponse = $this->post('user/register', $registration_data);
 
-        $response->assertStatus(302)->assertRedirect('/');
+        $postResponse->assertStatus(302)->assertRedirect('/');
 
         $this->assertDatabaseHas('users', [
             'name' => 'Luuk',
