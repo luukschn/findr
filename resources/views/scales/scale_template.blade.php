@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-<head 
 
 @section('title', 'Template')
 
@@ -26,7 +25,8 @@
 
             <input type="hidden" name="internalName" value="{{ $scale['internalName'] }}" />
             <input type="hidden" name="questionCount" value="{{ count($scale['questions']) }}" />
-            <input type="hidden" name="optionCount" value="{{ $scale['option-count'] }}"
+            <input type="hidden" name="optionCount" value="{{ $scale['option-count'] }}"/>
+            <input type="hidden" name="scaleId" value="{{ request()->route('scaleId') }}" />
 
             <div id="scale-questions">
                 <?php

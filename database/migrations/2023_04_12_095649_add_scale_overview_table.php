@@ -20,6 +20,7 @@ class AddScaleOverviewTable extends Migration
             $table->float('resultsAvg');
             $table->float('resultsSD');
             $table->float('completedCount');
+            $table->timestamps();
         });
     }
 

@@ -9,6 +9,8 @@ class ScaleResult extends Model
 {
     use HasFactory;
 
+    protected $table = 'scaleResults';
+
     protected $primaryKey = 'resultId';
 
     protected $fillable = [

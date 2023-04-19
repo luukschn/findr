@@ -15,9 +15,10 @@ class AddScaleResultsTable extends Migration
     {
         Schema::create('scaleResults', function(Blueprint $table){
             $table->id('resultId');
-            $table->foreignId('userId')->constrained('users', 'id');
-            $table->foreignId('scaleId')->constrained('scales', 'scaleId');
+            $table->foreignId('userId')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('scaleId')->nullable()->constrained('scales', 'scaleId')->cascadeOnDelete();
             $table->integer('score');
+            $table->timestamps();
         });
     }
 
