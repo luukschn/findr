@@ -28,7 +28,7 @@ class ScaleController extends Controller
             } else {
                 //format reversed, values have to be reversed
 
-                //TODO make reversal function separate  
+                //TODO make reversal function separate
                 $result += $option_count - (int)$request->input($internal_name . "-" . $i) + 1;
             }
         }
@@ -46,13 +46,36 @@ class ScaleController extends Controller
 
         //scales table processing
         if (Scale::where('scaleId', $scaleId)->where('userId', Auth::id())->exists()) {
-            $scale = Scale::where('scaleId', $scaleId)->where('userId', Auth::id())->first();
-            $completedCount = $scale->update['completedCount'] += 1;
+            //TODO separate functions
 
-            //figure out how to update running average based on one additional variable.
-            //also have to take in to account that the first input will be null / 0
+            /* mean */
+            $scale = Scale::where('scaleId', $scaleId)->where('userId', Auth::id())->first();
+            $old_completed_count = $scale['completedCount'];
+            $new_completed_count = $scale->update(['completedCount' => ($old_completed_count + 1)]);
+
+            $old_avg = $scale['resultsAvg'];
+            $new_avg = ((($old_avg * $old_completed_count) + $result) / $new_completed_count);
+
+
+            /* SD */
+            //TODO verify if this algorithm functions as intended - https://math.stackexchange.com/a/775678
+            $old_sd = $scale['resultsSD'];
+            $old_variance = $old_sd ** 2;
+            $new_variance = (($new_completed_count - 2) * $old_variance + ($result - $new_avg)*($result - $old_avg)) / $old_completed_count;
+            $new_sd = sqrt($new_variance);
+
+            $scale->update([
+                'resultsAvg' => $new_avg,
+                'resultsSD' => $new_sd
+            ]);
+
         } else {
-            //finish else clause
+            //n = 1
+            Scale::insert([
+                'resultsSD' => 0,
+                'resultsAvg' => $result,
+                'completedCount' => 1
+            ]);
         }
         
 

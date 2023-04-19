@@ -21,5 +21,10 @@
                 - What other metrics signal respect to another individual?
         - Trust
     </p>
+
+    <p>
+        Many scales separate between male and female, age, or other demographic characteristics in the relative score result. 
+        This is not yet implemented.
+    </p>
 </div>
 @endsection
