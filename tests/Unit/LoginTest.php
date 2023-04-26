@@ -20,6 +20,8 @@ class LoginTest extends TestCase
     }
 
     public function test_login_user_success() {
+        //RODO refactor with actingAs
+        
         $email = "z@z.com";
         $password = 'secret';
 
