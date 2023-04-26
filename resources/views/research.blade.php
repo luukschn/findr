@@ -25,6 +25,9 @@
     <p>
         Many scales separate between male and female, age, or other demographic characteristics in the relative score result. 
         This is not yet implemented.
+
+        Scale standard deviations and averages are taken from the source of the scale. Data on SD and averages are collected but not (yet) used.
+        Score percentiles are determines based on assumed normal distribution of scores in the scales.
     </p>
 </div>
 @endsection

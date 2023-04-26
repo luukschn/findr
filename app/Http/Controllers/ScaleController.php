@@ -93,6 +93,75 @@ class ScaleController extends Controller
         }
         
         //TODO refer to results page
-        return redirect('/about');
+        return $this->show_results_individual($scaleId, Auth::id());
+    }
+
+    public function show_results_individual($scaleId, $userId) {
+        if (Auth::check()) {
+
+            $scaleResult = ScaleResult::where('userId', $userId)->where('scaleId', $scaleId)->first();
+            $scale = Scale::where('scaleId', $scaleId)->first();
+
+            if ($scaleResult != null ) { //ensure that empty results == null
+                $score = $scaleResult->score;
+                $scaleAvg = $scale->sourceAvg;
+                $scaleSD = $scale->sourceSD;
+
+                //calculate score percentile
+                $z_score = ($score - $scaleAvg) / $scaleSD;
+                $percentile = ($this->cdf($z_score)) * 100;
+
+                $results = [
+                    'score' => $score,
+                    'average' => $scaleAvg, 
+                    'sd' => $scaleSD,
+                    'percentile' => $percentile
+                ];
+
+                return view('scales.scale_results')->with('results', $results);
+            } else {
+                return redirect('scale/' . $scaleId);
+            }
+
+        } else {
+            if (Auth::id() != $userId) {
+                //TODO alternatively redirect back with error popup that you cannot access this page
+                return redirect('no_access_page');
+            } else {
+                return view('login');
+            }
+
+            
+            
+        }
+    }
+
+
+    
+    private function erf($x) {
+        //TODO: move to helper file somewhere
+
+        //https://www.php.net/manual/en/function.stats-stat-percentile.php#88558
+        $pi = pi();
+
+        $a = (8 * ($pi - 3)) / (3 * $pi * (4 - $pi));
+        $x2 = $x * $x;
+        $ax2 = $a * $x2;
+
+        $num = (4/$pi) + $ax2;
+        $denom = 1 + $ax2;
+
+        $inner = (-$x2) * $num/$denom;
+        $erf2 = 1 - exp($inner);
+
+        return sqrt($erf2);
+    }
+
+    private function cdf($n) {
+        if ($n < 0) {
+            return (1 - $this->erf($n / sqrt(2))) / 2;
+        } else {
+            return (1 + $this->erf($n / sqrt(2))) / 2;
+        }
     }
 }

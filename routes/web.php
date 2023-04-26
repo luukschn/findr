@@ -99,6 +99,8 @@ Route::get('scale/{scaleId}', function($scaleId) {
     return view('scales.scale-' . $scaleId);
 })->name('scale');
 Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
+
+Route::get('scale/{scaleId}/result/{userId}', [ScaleController::class, 'show_results_individual']);
 // Route::get('finder/{scaleId}', function() {
 //     if (Auth::check()) {
 //         return view('finder.scale', $scaleId); //figure out how to display correct scale based on id
