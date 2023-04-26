@@ -18,4 +18,9 @@ class Scale extends Model
         'resultsSD',
         'completedCount'
     ];
+
+    protected $casts = [
+        'created_at',
+        'updated_at'
+    ];
 }
