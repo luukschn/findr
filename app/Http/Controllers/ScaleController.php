@@ -20,6 +20,7 @@ class ScaleController extends Controller
         $internal_name = $request->internalName;
         $question_count = $request->questionCount; 
         $option_count = $request->optionCount;
+        $officalName = $request->officialName;
 
         $result = 0;
         for ($i=1; $i <= $question_count; $i++) {
@@ -73,7 +74,8 @@ class ScaleController extends Controller
             Scale::insert([
                 'resultsSD' => 0,
                 'resultsAvg' => $result,
-                'completedCount' => 1
+                'completedCount' => 1,
+                'scaleName' => $officalName
             ]);
         }
 
@@ -104,7 +106,7 @@ class ScaleController extends Controller
 
             if ($scaleResult != null ) { //ensure that empty results == null
                 $score = $scaleResult->score;
-                $scaleAvg = $scale->sourceAvg;
+                $scaleAvg = $scale->sourceAvg; //both entries removed from scales table
                 $scaleSD = $scale->sourceSD;
 
                 //calculate score percentile

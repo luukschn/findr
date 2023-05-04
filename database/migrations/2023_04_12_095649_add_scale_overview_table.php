@@ -15,11 +15,9 @@ class AddScaleOverviewTable extends Migration
     {
         Schema::create('scales', function(Blueprint $table) {
             $table->id('scaleId');
-            $table->float('sourceAvg');
-            $table->float('sourceSD');
-            $table->float('resultsAvg');
-            $table->float('resultsSD');
-            $table->float('completedCount');
+            $table->float('resultsAvg')->nullable();
+            $table->float('resultsSD')->nullabe();
+            $table->integer('completedCount')->default(0);
             $table->timestamps();
         });
     }

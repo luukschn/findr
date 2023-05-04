@@ -12,8 +12,6 @@ class Scale extends Model
     protected $primaryKey = 'scaleId';
 
     protected $fillable = [
-        'sourceAvg',
-        'sourceSD', 
         'resultsAvg', 
         'resultsSD',
         'completedCount'

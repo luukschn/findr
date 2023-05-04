@@ -17,7 +17,7 @@ class AddScaleResultsTable extends Migration
             $table->id('resultId');
             $table->foreignId('userId')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('scaleId')->nullable()->constrained('scales', 'scaleId')->cascadeOnDelete();
-            $table->integer('score');
+            $table->integer('score')->nullable();
             $table->timestamps();
         });
     }
