@@ -7,6 +7,8 @@ use App\Models\User;
 
 class FinderTest extends TestCase
 {
+    use RefreshDatabase; 
+    
     /**
      * A basic unit test example.
      *
