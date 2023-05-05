@@ -2,12 +2,15 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 use App\Models\User;
 
 class ProfilePageTest extends TestCase
 {
+    use DatabaseMigrations;
+    
     /**
      * A basic unit test example.
      *

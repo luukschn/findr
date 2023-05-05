@@ -2,7 +2,9 @@
 
 
 use App\Http\Controllers\ScaleController;
+use App\Http\Controllers\ScaleUploadController;
 use App\Http\Controllers\UserManagement\RegistrationController;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserManagement\LoginController;
@@ -108,4 +110,12 @@ Route::get('scale/{scaleId}/result/{userId}', [ScaleController::class, 'show_res
 //         return redirect('login');
 //     }
 // })
+Route::get('scale/upload', function() {
+    $user = User::where('id', Auth::id()); //not sure if this should be done here
+    if ($user['is_admin'] == 1) {
+        return view('scales.scale_upload');
+    } else {
+        return redirect()->back();
+    }
+});
 
