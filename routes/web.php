@@ -112,10 +112,15 @@ Route::get('scale/{scaleId}/result/{userId}', [ScaleController::class, 'show_res
 // })
 Route::get('upload/scale', function() {
     $user = User::find(Auth::id()); //not sure if this should be done here
-    if ($user->is_admin == 1) {
-        return view('scales.scale_upload');
+    if ($user != null) {
+        if ($user->is_admin == 1) {
+            return view('scales.scale_upload');
+        } else {
+            return redirect()->back();
+        }
     } else {
-        return redirect()->back();
+        return redirect('login');
     }
 });
+Route::post('upload/scale/submit', [ScaleUploadController::class, 'process_scale_upload']);
 

@@ -19,6 +19,11 @@
         $(document).on('click', '.remove-question', function(e) {
             e.preventDefault();
 
+            //prevent removal of last question
+            // var questions = document.getElementById(".question-container");
+            // if (questions.getElementsByTagName('*').length > 1) {
+                
+            // }
             $(this).closest('.question-container').remove();
         });
     });
@@ -58,18 +63,13 @@
 
                         <div class="mb-3 col-md-21">
                             <label class="form-label">Explanation</label>
-                            <input class="form-control" type="text" name="explanation" required>
-                        </div>
-
-                        <div class="mb-3 col-md-21">
-                            <label class="form-label">Internal Name</label>
-                            <input class="form-control" type="text" name="internalName" required>
+                            <textarea class="form-control" type="text" name="explanation" required></textarea>
                         </div>
 
                         <div class="mb-3 col-md-21">
                             <label class="form-label">Options</label>
                             <p>Note: format as CSV, e.g.: "always, sometimes, rarely, never"</p>
-                            <input class="form-control" type="text" name="internalName" required>
+                            <input class="form-control" type="text" name="options" required>
                         </div>
                         
                         <div class="mb-3 col-md-21">
@@ -84,8 +84,9 @@
 
 
                         <p>Questions:</p>
-                        <div class="question-container mb-3">
+                        <div class="question-container">
                             <input class='form-control' type="text" name="questions[]" placeholder="Enter question">
+                            <input type="checkbox" class="form-check-input" name="format[]">
                             <button class="remove-question">Remove</button>
                         </div>
 
@@ -95,6 +96,11 @@
                     <br>
 
                         <button id="add-question" class='btn btn-primary'>Add Question</button>
+                    </div>
+
+                    <br>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-secondary">Submit Questionnaire</button>
                     </div>
                 
                 </form>
