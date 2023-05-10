@@ -15,6 +15,13 @@ class AddScaleOverviewTable extends Migration
     {
         Schema::create('scales', function(Blueprint $table) {
             $table->id('scaleId');
+            $table->string('internalName');
+            $table->string('officialName');
+            $table->string('reference');
+            $table->string('explanation')->nullable();
+            $table->string('options'); //use as CSV to store different options
+            $table->float('referenceMean');
+            $table->float('referenceSD');
             $table->float('resultsAvg')->nullable();
             $table->float('resultsSD')->nullabe();
             $table->integer('completedCount')->default(0);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ScaleInformation;
+use App\Models\Scale;
 use App\Models\ScaleQuestion;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class ScaleUploadController extends Controller
             "referenceMean" => $request->referenceMean,
             "referenceSD" => $request->referenceSD
         ];
-        ScaleInformation::insert($scaleInformationData);
+        Scale::insert($scaleInformationData);
 
         $i = 0;
         foreach($request->input('questions') as $question) {
