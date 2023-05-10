@@ -14,7 +14,6 @@ class CreateScaleQuestionsTable extends Migration
     public function up()
     {
         Schema::create('scale_questions', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('scaleId')->constrained('scales', 'scaleId');
             $table->integer('format'); //0 normal, -1 reversed 
             $table->string('question_text');

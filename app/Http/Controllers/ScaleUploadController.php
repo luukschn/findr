@@ -8,12 +8,9 @@ use Illuminate\Http\Request;
 
 class ScaleUploadController extends Controller
 {
-    public function process_scale_upload (Request $request) {
+    public function process_scale_upload(Request $request) {
         
         //TODO add validator
-        $questions = $request->input('questions');
-
-        //'scales' table has the original ID. should probably be the other way around -> redo database structure ideally
 
         $scaleInformationData = [
             "internalName" => $request->internalName,
@@ -24,18 +21,32 @@ class ScaleUploadController extends Controller
             "referenceMean" => $request->referenceMean,
             "referenceSD" => $request->referenceSD
         ];
-        Scale::insert($scaleInformationData);
+        $scale = Scale::insert($scaleInformationData);
+        
+        
 
-        $i = 0;
-        foreach($request->input('questions') as $question) {
-            ScaleQuestion::insert([
-                "question_text" => $question,
-                "format" => $request->input('format')[$i]
-            ]);
+        // $i = 0;
 
-            $i++;
-        }
+        $questions_with_format = array();
+        $qs = $request->input('questions');
+        $f = $request->input('format');
 
-        return view('finder.finder_home');
+        info($qs);
+        info($f);
+
+        // for ($i = 0; $i <= count($request->input('questions'); $i++)) {
+        //     info("Q: " . )
+        // };
+
+        // foreach($request->input('questions') as $question) {
+        //     ScaleQuestion::insert([
+        //         "question_text" => $question,
+        //         "format" => $request->input('format')[$i]
+        //     ]);
+
+        //     $i++;
+        // }
+
+        // return view('finder.finder_home');
     }
 }

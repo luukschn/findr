@@ -23,7 +23,7 @@ class AddScaleOverviewTable extends Migration
             $table->float('referenceMean');
             $table->float('referenceSD');
             $table->float('resultsAvg')->nullable();
-            $table->float('resultsSD')->nullabe();
+            $table->float('resultsSD')->nullable();
             $table->integer('completedCount')->default(0);
             $table->timestamps();
         });

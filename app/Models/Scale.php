@@ -14,7 +14,14 @@ class Scale extends Model
     protected $fillable = [
         'resultsAvg', 
         'resultsSD',
-        'completedCount'
+        'completedCount',
+        'internalName',
+        'officialName',
+        'reference',
+        'explanation',
+        'options',
+        'referenceMean',
+        'referenceSD'
     ];
 
     protected $casts = [
