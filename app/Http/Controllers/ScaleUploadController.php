@@ -8,31 +8,39 @@ use Illuminate\Http\Request;
 
 class ScaleUploadController extends Controller
 {
-    public function process_scale_upload(Request $request) {
+    public function process_scale_upload() {
+    // public function process_scale_upload(Request $request) {
         
         //TODO add validator
+        $questions = $_POST['questions'];
+        $format = $_POST['format'];
+        $reference = $_POST['reference'];
 
-        $scaleInformationData = [
-            "internalName" => $request->internalName,
-            "officialName" => $request->officialName,
-            "reference" => $request->reference,
-            "explanation" => $request->explanation,
-            "options" => $request->options,
-            "referenceMean" => $request->referenceMean,
-            "referenceSD" => $request->referenceSD
-        ];
-        $scale = Scale::insert($scaleInformationData);
+        
+
+        // $scaleInformationData = [
+        //     "internalName" => $request->internalName,
+        //     "officialName" => $request->officialName,
+        //     "reference" => $request->reference,
+        //     "explanation" => $request->explanation,
+        //     "options" => $request->options,
+        //     "referenceMean" => $request->referenceMean,
+        //     "referenceSD" => $request->referenceSD
+        // ];
+        // $scale = Scale::insert($scaleInformationData);
         
         
 
         // $i = 0;
 
-        $questions_with_format = array();
-        $qs = $request->input('questions');
-        $f = $request->input('format');
+        // $questions_with_format = array();
+        // $qs = $request->input('questions');
+        // $f0 = $request->input('format');
+        // $f1 = $request->input('format');
 
-        info($qs);
-        info($f);
+        // info($qs);
+        // info($f0);
+        // info($f1[1]);
 
         // for ($i = 0; $i <= count($request->input('questions'); $i++)) {
         //     info("Q: " . )
