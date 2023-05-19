@@ -53,7 +53,7 @@
             });
 
             var internalName = $('#internalName').val();
-            var officialName = $('#officianName').val();
+            var officialName = $('#officialName').val();
             var reference = $('#reference').val();
             var explanation = $('#explanation').val();
             var options = $('#options').val();
@@ -80,7 +80,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    console.log('Response: ', response);
+                    window.location.href = '/finder';
                 },
                 error: function(xhr, status, error) {
                     console.error('Error: ', error);

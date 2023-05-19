@@ -17,5 +17,14 @@
             </tr>
         </table>
     </div>
+
+    <?php
+        if ((int)$is_admin == 1) {
+            echo "<div id='admin-add-scale'>";
+            echo "<h3>Admin panel</h3>";
+            echo "<a class='btn btn-primary' href='/upload/scale/'>Upload scale</a>";
+            echo "</div>";
+        }
+    ?>
 </div>
 @endsection

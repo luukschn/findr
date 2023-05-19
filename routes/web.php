@@ -88,12 +88,14 @@ Route::get('research', function (){
 
 /* Friend finder */
 Route::get('finder', function() {
+    $user = User::find(Auth::id());
+
     if (Auth::check()) {
-        return view('finder.finder_home');
+        return view('finder.finder_home')->with('is_admin', $user['is_admin']);
     } else {
         return redirect('login');
     }
-});
+})->name('finder');
 
 
 /* Scales */
