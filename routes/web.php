@@ -4,6 +4,8 @@
 use App\Http\Controllers\ScaleController;
 use App\Http\Controllers\ScaleUploadController;
 use App\Http\Controllers\UserManagement\RegistrationController;
+use App\Models\Scale;
+use App\Models\ScaleResult;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Route;
 
@@ -90,8 +92,34 @@ Route::get('research', function (){
 Route::get('finder', function() {
     $user = User::find(Auth::id());
 
+    $data = array();
+    $data['is_admin'] = $user['is_admin'];
+
+    $scales = Scale::get();
+    $scale_results = ScaleResult::get();
+
+    $data['scaleinfo'] = array();
+
+    foreach ($scales as $scale) {
+        $scaleId = $scale['scaleId'];
+
+        $scale_result = ScaleResult::where('scaleId', $scaleId)->where('userId', Auth::id())->first();
+
+        if ($scale_result != null){
+            $scale_progress = 'Finished';
+        } else {
+            $scale_progress = 'Not yet completed';
+        }
+
+        $data['scale_info'][] = [
+            'scale_name' => $scale['internalName'],
+            'scale_progress' => $scale_progress
+        ];
+    }
+    
+
     if (Auth::check()) {
-        return view('finder.finder_home')->with('is_admin', $user['is_admin']);
+        return view('finder.finder_home')->with('data', $data);
     } else {
         return redirect('login');
     }
