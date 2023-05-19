@@ -8,9 +8,9 @@
     {{-- @include('scales.scale-1')
     {{ $scale = @yield('scale') }} --}}
 
-    <h3 id="scale-title">{{ $scale['officialName'] }}</h3>
-    <p id="scale-explanation">{{ $scale['explanation'] }}</p>
-    <p id="scale-reference" class="small">Source:<br>{{ $scale['reference'] }}</p>
+    <h3 id="scale-title">{{ $data['scale']['officialName'] }}</h3>
+    <p id="scale-explanation">{{ $data['scale']['explanation'] }}</p>
+    <p id="scale-reference" class="small">Source:<br>{{ $data['scale']['reference'] }}</p>
 
 
 
@@ -21,35 +21,35 @@
             action="{{ url('/submit-scale') }}">
             @csrf
 
-            <input type="hidden" name="internalName" value="{{ $scale['internalName'] }}" />
+            <input type="hidden" name="internalName" value="{{ $data['scale']['internalName'] }}" />
             {{-- <input type="hidden" name="officialName" value=" {{ $scale['officialName'] }}" /> --}}
-            <input type="hidden" name="questionCount" value="{{ count($scale['questions']) }}" />
-            <input type="hidden" name="optionCount" value="{{ $scale['option-count'] }}"/>
+            <input type="hidden" name="questionCount" value="{{ count($data['questions']) }}" />
+            <input type="hidden" name="optionCount" value="{{ $data['scale']['option-count'] }}"/>
             <input type="hidden" name="scaleId" value="{{ request()->route('scaleId') }}" />
 
             <div id="scale-questions">
                 <?php
                     echo "<ul id='questions-list'>";
                     
-                    foreach ($scale['questions'] as $key => $question) {
+                    foreach ($data['questions'] as $question) {
                         //question itself
                         
-                        echo "<h5>". $question['q'] . "</h5>";
+                        echo "<h5>". $question['question_text'] . "</h5>";
                         
 
                         // item selector
-                        for ($i = 0; $i < $scale['option-count']; $i++) {
+                        for ($i = 0; $i < ($data['scale']['option-count'] - 1); $i++) {
 
                             //label for questions:
-                            if (count($scale['options']) == $scale['option-count']) {
-                                echo "<label class='form-check-label' for='" . $scale['internalName'] . "-" . $key ."'>" . $scale['options'][$i] . "</label>";
+                            if (count($data['scale']['options']) == $data['scale']['option-count']) {
+                                echo "<label class='form-check-label' for='" . $data['scale']['internalName'] . "-" . $data['scale']['options'][$i] ."'>" . $data['scale']['options'][$i] . "</label>";
                             }
 
                             echo "<div class='form-check form-check-inline'>";
-                            echo "<input class='form-check-input' type='radio' name='" . $scale['internalName'] . "-" . $key . "' value='" . $i . "' required/>";
+                            echo "<input class='form-check-input' type='radio' name='" . $data['scale']['internalName'] . "-" . $data['scale']['options'][$i] . "' value='" . $i . "' required/>";
 
                             //probably not the best way of sending this information, but oh well. 
-                            echo "<input type='hidden' name='" . $scale['internalName'] . "-format-" . $key . "' value='" . $question['format'] . "'/>";
+                            echo "<input type='hidden' name='" . $data['scale']['internalName'] . "-format-" . $data['scale']['options'][$i] . "' value='" . $question['format'] . "'/>";
 
                             //need to devise a way to dynamically spread the options evenly if options are fewer than the count of radio buttons
 

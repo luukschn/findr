@@ -5,6 +5,7 @@ use App\Http\Controllers\ScaleController;
 use App\Http\Controllers\ScaleUploadController;
 use App\Http\Controllers\UserManagement\RegistrationController;
 use App\Models\Scale;
+use App\Models\ScaleQuestion;
 use App\Models\ScaleResult;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Route;
@@ -112,7 +113,8 @@ Route::get('finder', function() {
         }
 
         $data['scale_info'][] = [
-            'scale_name' => $scale['internalName'],
+            'scale_name_official' => $scale['officialName'],
+            'scaleId' => $scale['scaleId'],
             'scale_progress' => $scale_progress
         ];
     }
@@ -128,7 +130,26 @@ Route::get('finder', function() {
 
 /* Scales */
 Route::get('scale/{scaleId}', function($scaleId) {
-    return view('scales.scale-' . $scaleId);
+    // return view('scales.scale-' . $scaleId);
+    $data = array();
+
+    $data['scale'] = Scale::where('scaleId', $scaleId)->first();
+    $data['questions'] = ScaleQuestion::where('scaleId', $scaleId)->get();
+
+    //parse the CSV values and get the amount of options:
+    
+    $data['scale']['option-count'] = (substr_count($data['scale']['options'], ',') + 1);
+
+    $options_array = explode($data['scale']['options'], ',');
+
+    for ($i = 0; $i <= (count($options_array) - 1); $i++) {
+        $options_array[$i] = trim($options_array[$i]);
+    }
+
+    $data['scale']['options'] = $options_array;
+
+
+    return view('scales.scale_template')->with('data', $data);
 })->name('scale');
 Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
 
