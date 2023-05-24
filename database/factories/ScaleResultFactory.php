@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Scale;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ScaleResultFactory extends Factory
@@ -14,9 +16,13 @@ class ScaleResultFactory extends Factory
     public function definition()
     {
         return [
-            'userId' => 1,
-            'scaleId' => 1,
-            'score' => random_int(1, 80)
+            'score' => $this->faker->numberBetween(0, 100),
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
+            'scale_id' => function () {
+                return Scale::factory()->create()->id;
+            }
         ];
     }
 }

@@ -14,7 +14,7 @@ class CreateScaleQuestionsTable extends Migration
     public function up()
     {
         Schema::create('scale_questions', function (Blueprint $table) {
-            $table->foreignId('scaleId')->constrained('scales', 'scaleId');
+            $table->foreignId('scale_id')->constrained('scales', 'scale_id')->cascadeOnDelete();
             $table->integer('format'); //0 normal, -1 reversed 
             $table->string('question_text');
             $table->timestamps();

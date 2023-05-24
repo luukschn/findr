@@ -25,7 +25,7 @@ class ScaleUploadController extends Controller
             "referenceMean" => $_POST['referenceMean'],
             "referenceSD" => $_POST['referenceSD']
         ];
-        $scaleId = Scale::insertGetId($scaleInformationData);
+        $scale_id = Scale::insertGetId($scaleInformationData);
         
         $questions = $_POST['questions'];
         $format = $_POST['format'];
@@ -33,7 +33,7 @@ class ScaleUploadController extends Controller
             ScaleQuestion::insert([
                 "question_text" => $question,
                 "format" => $format,
-                "scaleId" => $scaleId
+                "scale_id" => $scale_id
             ]);
         };
 

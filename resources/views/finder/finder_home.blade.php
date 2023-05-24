@@ -15,7 +15,7 @@
                     echo "<tr>";
                     echo "<td>";
                     // echo "<p>" . $scale_details['scale_name_official'] . " - " . $scale_details['scale_progress'] . "</p>";
-                    echo "<a href='/scale/" . $scale_details['scaleId'] . "'>" . $scale_details['scale_name_official'] . " - " . $scale_details['scale_progress'] . "</a>";
+                    echo "<a href='/scale/" . $scale_details['scale_id'] . "'>" . $scale_details['scale_name_official'] . " - " . $scale_details['scale_progress'] . "</a>";
                     echo "</td>";
                     echo "</tr>";
                 }

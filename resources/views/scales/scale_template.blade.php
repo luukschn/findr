@@ -25,7 +25,7 @@
             {{-- <input type="hidden" name="officialName" value=" {{ $scale['officialName'] }}" /> --}}
             <input type="hidden" name="questionCount" value="{{ count($data['questions']) }}" />
             <input type="hidden" name="optionCount" value="{{ $data['scale']['option-count'] }}"/>
-            <input type="hidden" name="scaleId" value="{{ request()->route('scaleId') }}" />
+            <input type="hidden" name="scale_id" value="{{ request()->route('scale_id') }}" />
 
             <div id="scale-questions">
                 <?php
@@ -39,6 +39,8 @@
 
                         // item selector
                         for ($i = 0; $i < ($data['scale']['option-count'] - 1); $i++) {
+
+                            //TODO labels not parsed correctly -> see how to fix
 
                             //label for questions:
                             if (count($data['scale']['options']) == $data['scale']['option-count']) {

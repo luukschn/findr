@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
-use App\Models\extendedUserInfo;
+use App\Models\ExtendedUserInfo;
 use Illuminate\Support\Facades\Hash;
 use Nette\Utils\DateTime;
 
 class ProfileController extends Controller
 {
-    public function get_profile($userId) {
-        if (Auth::check() && (Auth::id() == $userId)) {
-            $extended_user_info = extendedUserInfo::where('userId', $userId)->first();
+    public function get_profile($user_id) {
+        if (Auth::check() && (Auth::id() == $user_id)) {
+            $extended_user_info = ExtendedUserInfo::where('user_id', $user_id)->first();
 
             if ($extended_user_info) {
                 $user_info = [
@@ -59,7 +59,7 @@ class ProfileController extends Controller
             $user->save();
             
 
-            if (!extendedUserInfo::where('userId', Auth::id())->exists()) {
+            if (!ExtendedUserInfo::where('user_id', Auth::id())->exists()) {
                 $extended_user_info = array();
 
                 foreach ($user_info as $key => $value) {
@@ -69,16 +69,16 @@ class ProfileController extends Controller
                 }
 
                 if (count($extended_user_info) != 0) {
-                    $extended_user_info['userId'] = Auth::id();
+                    $extended_user_info['user_id'] = Auth::id();
                     $extended_user_info['created_at'] = new DateTime();
                     $extended_user_info['updated_at'] = new DateTime();
 
-                    extendedUserInfo::insert($extended_user_info);
+                    ExtendedUserInfo::insert($extended_user_info);
                 }
 
             } else {
                 // update everything, null where nothing is put in. Ensure database, model, and request validators can handle this.
-                $extended_user_info = extendedUserInfo::where('userId', Auth::id());
+                $extended_user_info = ExtendedUserInfo::where('user_id', Auth::id());
 
                 foreach ($user_info as $key => $value) {
                     if ($key != 'name' && $key != 'email') {

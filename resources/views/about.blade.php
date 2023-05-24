@@ -6,6 +6,6 @@
 <div>
     <h3>About</h3>
 
-    <a href="{{ route('scale', ['scaleId' => 1]) }}">Take the Loneliness Scale </p>
+    <a href="{{ route('scale', ['scale_id' => 1]) }}">Take the Loneliness Scale </p>
 </div>
 @endsection

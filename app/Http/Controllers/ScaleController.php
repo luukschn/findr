@@ -16,7 +16,7 @@ class ScaleController extends Controller
         internal-name-i
         */
 
-        $scaleId = $request->scaleId;
+        $scale_id = $request->scale_id;
         $internal_name = $request->internalName;
         $question_count = $request->questionCount; 
         $option_count = $request->optionCount;
@@ -37,13 +37,13 @@ class ScaleController extends Controller
         
 
         //scales table processing
-        if (Scale::where('scaleId', $scaleId)->exists()) {
+        if (Scale::where('scale_id', $scale_id)->exists()) {
             //TODO separate functions
 
             /* mean */
             // avg also not working correctly. seems to be cumulative results
             //TODO only last score for a given user?
-            $scale = Scale::where('scaleId', $scaleId)->first();
+            $scale = Scale::where('scale_id', $scale_id)->first();
             $old_completed_count = $scale['completedCount'];
             $new_completed_count = $old_completed_count + 1;
             $scale->update(['completedCount' => $new_completed_count]);
@@ -81,28 +81,28 @@ class ScaleController extends Controller
 
 
         //ScaleResult table processing
-        if (ScaleResult::where('userId', Auth::id())->where('scaleId', $scaleId)->exists()) {
-            $scaleResult = ScaleResult::where('userId', Auth::id())->where('scaleId', $scaleId)->first();
+        if (ScaleResult::where('user_id', Auth::id())->where('scale_id', $scale_id)->exists()) {
+            $scaleResult = ScaleResult::where('user_id', Auth::id())->where('scale_id', $scale_id)->first();
             $scaleResult->update(['score' => $result]);
             $scaleResult->save();
         } else {
             ScaleResult::insert([
                 'score' => $result,
-                'userId' => Auth::id(),
-                'scaleId' => $scaleId,
+                'user_id' => Auth::id(),
+                'scale_id' => $scale_id,
                 'created_at' => new DateTime()
             ]);
         }
         
         //TODO refer to results page
-        return $this->show_results_individual($scaleId, Auth::id());
+        return $this->show_results_individual($scale_id, Auth::id());
     }
 
-    public function show_results_individual($scaleId, $userId) {
+    public function show_results_individual($scale_id, $user_id) {
         if (Auth::check()) {
 
-            $scaleResult = ScaleResult::where('userId', $userId)->where('scaleId', $scaleId)->first();
-            $scale = Scale::where('scaleId', $scaleId)->first();
+            $scaleResult = ScaleResult::where('user_id', $user_id)->where('scale_id', $scale_id)->first();
+            $scale = Scale::where('scale_id', $scale_id)->first();
 
             if ($scaleResult != null ) { //ensure that empty results == null
                 $score = $scaleResult->score;
@@ -122,11 +122,11 @@ class ScaleController extends Controller
 
                 return view('scales.scale_results')->with('results', $results);
             } else {
-                return redirect('scale/' . $scaleId);
+                return redirect('scale/' . $scale_id);
             }
 
         } else {
-            if (Auth::id() != $userId) {
+            if (Auth::id() != $user_id) {
                 //TODO alternatively redirect back with error popup that you cannot access this page
                 return redirect('no_access_page');
             } else {

@@ -102,9 +102,9 @@ Route::get('finder', function() {
     $data['scaleinfo'] = array();
 
     foreach ($scales as $scale) {
-        $scaleId = $scale['scaleId'];
+        $scale_id = $scale['scale_id'];
 
-        $scale_result = ScaleResult::where('scaleId', $scaleId)->where('userId', Auth::id())->first();
+        $scale_result = ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first();
 
         if ($scale_result != null){
             $scale_progress = 'Finished';
@@ -114,7 +114,7 @@ Route::get('finder', function() {
 
         $data['scale_info'][] = [
             'scale_name_official' => $scale['officialName'],
-            'scaleId' => $scale['scaleId'],
+            'scale_id' => $scale['scale_id'],
             'scale_progress' => $scale_progress
         ];
     }
@@ -129,12 +129,12 @@ Route::get('finder', function() {
 
 
 /* Scales */
-Route::get('scale/{scaleId}', function($scaleId) {
-    // return view('scales.scale-' . $scaleId);
+Route::get('scale/{scale_id}', function($scale_id) {
+    // return view('scales.scale-' . $scale_id);
     $data = array();
 
-    $data['scale'] = Scale::where('scaleId', $scaleId)->first();
-    $data['questions'] = ScaleQuestion::where('scaleId', $scaleId)->get();
+    $data['scale'] = Scale::where('scale_id', $scale_id)->first();
+    $data['questions'] = ScaleQuestion::where('scale_id', $scale_id)->get();
 
     //parse the CSV values and get the amount of options:
     
@@ -153,10 +153,10 @@ Route::get('scale/{scaleId}', function($scaleId) {
 })->name('scale');
 Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
 
-Route::get('scale/{scaleId}/result/{userId}', [ScaleController::class, 'show_results_individual']);
-// Route::get('finder/{scaleId}', function() {
+Route::get('scale/{scale_id}/result/{user_id}', [ScaleController::class, 'show_results_individual']);
+// Route::get('finder/{scale_id}', function() {
 //     if (Auth::check()) {
-//         return view('finder.scale', $scaleId); //figure out how to display correct scale based on id
+//         return view('finder.scale', $scale_id); //figure out how to display correct scale based on id
 //     } else {
 //         return redirect('login');
 //     }

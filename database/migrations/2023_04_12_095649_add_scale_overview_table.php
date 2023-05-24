@@ -14,7 +14,7 @@ class AddScaleOverviewTable extends Migration
     public function up()
     {
         Schema::create('scales', function(Blueprint $table) {
-            $table->id('scaleId');
+            $table->id('scale_id');
             $table->string('internalName');
             $table->string('officialName');
             $table->string('reference');

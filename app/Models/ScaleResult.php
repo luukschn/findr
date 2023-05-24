@@ -14,11 +14,21 @@ class ScaleResult extends Model
     protected $primaryKey = 'resultId';
 
     protected $fillable = [
-        'score'
+        'score',
+        'user_id', 
+        'scale_id'
     ];
 
     protected $casts = [
-        'userId',
-        'scaleId'
+        'user_id',
+        'scale_id'
     ];
+
+    public function Scale() {
+        return $this->belongsTo(Scale::class, 'scale_id', 'scale_id');
+    }
+
+    public function User() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

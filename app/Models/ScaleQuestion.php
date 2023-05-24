@@ -11,6 +11,8 @@ class ScaleQuestion extends Model
 
     protected $table = 'scale_questions';
 
+    protected $foreignKey = 'scale_id';
+
     protected $fillable = [
         'format',
         'question_text'
@@ -20,4 +22,8 @@ class ScaleQuestion extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function Scale() {
+        return $this->belongsTo(Scale::class, 'scale_id', 'scale_id');
+    }
 }

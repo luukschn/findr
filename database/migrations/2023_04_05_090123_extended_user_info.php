@@ -17,18 +17,20 @@ class ExtendedUserInfo extends Migration
             // need to think about standardization in general
 
             //ensure id is same as users id
-            $table->unsignedBigInteger('userId');
-            $table->foreign('userId')
+            // $table->id();
+            // $table->foreign('user_id')->constrained('users', 'id')->cascadeOnDelete();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->date('dateOfBirth');
-            $table->integer('country'); //really needs to be int if i want to use to to match people
-            $table->integer('location'); //really needs to be int if i want to use to to match people -> 'subindex' for provice based on country popup has to be dynamic
-            $table->string('jobTitle'); //need some kind of nlp to match people on this.
-            $table->integer('educationLevel');  //map prior
-            $table->integer('gender'); //map prior
-            $table->text('bio');
+            $table->date('dateOfBirth')->nullable();
+            $table->integer('country')->nullable(); //really needs to be int if i want to use to to match people
+            $table->integer('location')->nullable(); //really needs to be int if i want to use to to match people -> 'subindex' for provice based on country popup has to be dynamic
+            $table->string('jobTitle')->nullable(); //need some kind of nlp to match people on this.
+            $table->integer('educationLevel')->nullable();  //map prior
+            $table->integer('gender')->nullable(); //map prior
+            $table->text('bio')->nullable();
             $table->timestamps();
         });
 

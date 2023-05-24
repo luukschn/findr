@@ -9,7 +9,7 @@ class Scale extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'scaleId';
+    // protected $primaryKey = 'scale_id';
 
     protected $fillable = [
         'resultsAvg', 
@@ -26,6 +26,15 @@ class Scale extends Model
 
     protected $casts = [
         'created_at',
-        'updated_at'
+        'updated_at',
+        'scale_id'
     ];
+
+    public function ScaleQuestion() {
+        return $this->hasMany(ScaleQuestion::class);
+    }
+
+    public function ScaleResult() {
+        return $this->hasMany(ScaleResult::class);
+    }
 }
