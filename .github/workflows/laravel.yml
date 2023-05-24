@@ -27,7 +27,6 @@ jobs:
     - name: Create Database
       run: |
         touch storage/app/db.sqlite
-    - script: |
         php artisan migrate --force
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
