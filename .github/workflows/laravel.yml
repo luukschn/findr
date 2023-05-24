@@ -28,6 +28,7 @@ jobs:
       run: |
         touch storage/app/db.sqlite
         php artisan migrate --force
+        php artisan db:seed
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
