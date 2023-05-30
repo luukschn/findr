@@ -139,8 +139,9 @@ Route::get('scale/{scale_id}', function($scale_id) {
     //parse the CSV values and get the amount of options:
     
     $data['scale']['option-count'] = (substr_count($data['scale']['options'], ',') + 1);
+    
 
-    $options_array = explode($data['scale']['options'], ',');
+    $options_array = explode(',', $data['scale']['options']);
 
     for ($i = 0; $i <= (count($options_array) - 1); $i++) {
         $options_array[$i] = trim($options_array[$i]);

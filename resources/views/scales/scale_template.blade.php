@@ -38,6 +38,9 @@
                         
 
                         // item selector
+                        // if (issset($data['scale']['options']) && is_array($data['scale']['options']))
+
+
                         for ($i = 0; $i < ($data['scale']['option-count'] - 1); $i++) {
 
                             //TODO labels not parsed correctly -> see how to fix
