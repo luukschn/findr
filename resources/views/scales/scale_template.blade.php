@@ -24,42 +24,45 @@
             <input type="hidden" name="internalName" value="{{ $data['scale']['internalName'] }}" />
             {{-- <input type="hidden" name="officialName" value=" {{ $scale['officialName'] }}" /> --}}
             <input type="hidden" name="questionCount" value="{{ count($data['questions']) }}" />
-            <input type="hidden" name="optionCount" value="{{ $data['scale']['option-count'] }}"/>
+            <input type="hidden" name="optionCount" value="{{ $data['scale']['option-count'] }}"/> 
             <input type="hidden" name="scale_id" value="{{ request()->route('scale_id') }}" />
 
             <div id="scale-questions">
                 <?php
                     echo "<ul id='questions-list'>";
+
+                    $question_counter = 0;
                     
                     foreach ($data['questions'] as $question) {
                         //question itself
-                        
                         echo "<h5>". $question['question_text'] . "</h5>";
+                        
                         
 
                         // item selector
-                        // if (issset($data['scale']['options']) && is_array($data['scale']['options']))
-
-
-                        for ($i = 0; $i < ($data['scale']['option-count'] - 1); $i++) {
-
-                            //TODO labels not parsed correctly -> see how to fix
+                        for ($i = 0; $i <= ($data['scale']['option-count'] - 1); $i++) {
 
                             //label for questions:
-                            if (count($data['scale']['options']) == $data['scale']['option-count']) {
-                                echo "<label class='form-check-label' for='" . $data['scale']['internalName'] . "-" . $data['scale']['options'][$i] ."'>" . $data['scale']['options'][$i] . "</label>";
-                            }
+                            // if (count($data['scale']['options']) == $data['scale']['option-count']) {
+                            //     echo "<label class='form-check-label' for='" . $data['scale']['internalName'] . "-" . $data['scale']['options'][$i] . "-" . $q_counter . "'>" . $data['scale']['options'][$i] . "</label>";
+                            // }
+                            echo "<label class='form-check-label' for='" . $data['scale']['internalName'] . "-" . $question_counter . "'>" . $data['scale']['options'][$i] . "</label>";
+
 
                             echo "<div class='form-check form-check-inline'>";
-                            echo "<input class='form-check-input' type='radio' name='" . $data['scale']['internalName'] . "-" . $data['scale']['options'][$i] . "' value='" . $i . "' required/>";
+                            echo "<input class='form-check-input' type='radio' name='" . $data['scale']['internalName'] . "-" . $question_counter . "' value='" . $i . "' required/>";
 
                             //probably not the best way of sending this information, but oh well. 
-                            echo "<input type='hidden' name='" . $data['scale']['internalName'] . "-format-" . $data['scale']['options'][$i] . "' value='" . $question['format'] . "'/>";
+                            echo "<input type='hidden' name='" . $data['scale']['internalName'] . "-format-" . $question_counter . "' value='" . $question['format'] . "'/>";
 
                             //need to devise a way to dynamically spread the options evenly if options are fewer than the count of radio buttons
 
                             echo "</div>";
+
+                            
                         }
+
+                        $question_counter++;
                         
                     }
                     
