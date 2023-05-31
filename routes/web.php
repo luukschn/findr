@@ -130,31 +130,42 @@ Route::get('finder', function() {
 
 /* Scales */
 Route::get('scale/{scale_id}', function($scale_id) {
-    // return view('scales.scale-' . $scale_id);
-    $data = array();
 
-    $data['scale'] = Scale::where('scale_id', $scale_id)->first();
-    $data['questions'] = ScaleQuestion::where('scale_id', $scale_id)->get();
+    if (ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first() == null) {
+        // return view('scales.scale-' . $scale_id);
+        $data = array();
 
-    //parse the CSV values and get the amount of options:
-    
-    $data['scale']['option-count'] = (substr_count($data['scale']['options'], ',') + 1);
-    
+        $data['scale'] = Scale::where('scale_id', $scale_id)->first();
+        $data['questions'] = ScaleQuestion::where('scale_id', $scale_id)->get();
 
-    $options_array = explode(',', $data['scale']['options']);
+        //parse the CSV values and get the amount of options:
+        
+        $data['scale']['option-count'] = (substr_count($data['scale']['options'], ',') + 1);
+        
 
-    for ($i = 0; $i <= (count($options_array) - 1); $i++) {
-        $options_array[$i] = trim($options_array[$i]);
+        $options_array = explode(',', $data['scale']['options']);
+
+        for ($i = 0; $i <= (count($options_array) - 1); $i++) {
+            $options_array[$i] = trim($options_array[$i]);
+        }
+
+        $data['scale']['options'] = $options_array;
+
+        return view('scales.scale_template')->with('data', $data);
+
+    } else {
+        // if (request()->route()->getName() !== 'show_scale_results') {
+        //     return redirect()->route('show_scale_results', ['scale_id' => $scale_id, 'user_id', Auth::id()]);
+        // } else {
+        //     return route('show_scale_results', ['scale_id' => $scale_id, 'user_id', Auth::id()]);
+        // }
+        return app(ScaleController::class)->show_results_individual($scale_id, Auth::id());
     }
-
-    $data['scale']['options'] = $options_array;
-
-
-    return view('scales.scale_template')->with('data', $data);
 })->name('scale');
+
 Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
 
-Route::get('scale/{scale_id}/result/{user_id}', [ScaleController::class, 'show_results_individual']);
+Route::get('scale/{scale_id}/result/{user_id}', [ScaleController::class, 'show_results_individual'])->name('show_scale_results');
 // Route::get('finder/{scale_id}', function() {
 //     if (Auth::check()) {
 //         return view('finder.scale', $scale_id); //figure out how to display correct scale based on id

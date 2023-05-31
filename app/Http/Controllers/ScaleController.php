@@ -72,7 +72,7 @@ class ScaleController extends Controller
             //n = 1
             //TODO also add the input of the source avg and sd from here, so I can just add that to my template for scales
             Scale::insert([
-                'resultsSD' => 0,
+                'resultsSD' => 1,
                 'resultsAvg' => $result,
                 'completedCount' => 1,
                 'scaleName' => $officalName
@@ -106,8 +106,8 @@ class ScaleController extends Controller
 
             if ($scaleResult != null ) { //ensure that empty results == null
                 $score = $scaleResult->score;
-                $scaleAvg = $scale->sourceAvg; //both entries removed from scales table
-                $scaleSD = $scale->sourceSD;
+                $scaleAvg = $scale->referenceMean;
+                $scaleSD = $scale->referenceSD;
 
                 //calculate score percentile
                 $z_score = ($score - $scaleAvg) / $scaleSD;
