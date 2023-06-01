@@ -151,15 +151,9 @@ Route::get('scale/{scale_id}', function($scale_id) {
         return view('scales.scale_template')->with('data', $data);
 
     } else {
-        // if (request()->route()->getName() !== 'show_scale_results') {
-        //     return redirect()->route('show_scale_results', ['scale_id' => $scale_id, 'user_id', Auth::id()]);
-        // } else {
-        //     return route('show_scale_results', ['scale_id' => $scale_id, 'user_id', Auth::id()]);
-        // }
         $controller = app(ScaleController::class);
         $response = $controller->callAction('show_results_individual', [$scale_id, Auth::id()]);
         return $response->render();
-        // return app(ScaleController::class)->show_results_individual($scale_id, Auth::id());
     }
 })->name('scale');
 

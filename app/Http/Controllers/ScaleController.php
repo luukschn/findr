@@ -8,6 +8,8 @@ use App\Models\Scale;
 use App\Models\ScaleResult;
 use Illuminate\Support\Facades\Auth;
 use Nette\Utils\DateTime;
+use App\Helpers\ScaleHelpers;
+
 
 class ScaleController extends Controller
 {
@@ -23,7 +25,7 @@ class ScaleController extends Controller
         $officalName = $request->officialName;
 
         $result = 0;
-        for ($i=1; $i <= $question_count; $i++) {
+        for ($i=0; $i <= $question_count; $i++) {
             if ($request->input($internal_name . "-format-" . $i) == "n") {
                 //format normal, options can just be added to total
                 $result += (int)$request->input($internal_name . "-" . $i);
@@ -94,7 +96,6 @@ class ScaleController extends Controller
             ]);
         }
         
-        //TODO refer to results page
         return $this->show_results_individual($scale_id, Auth::id());
     }
 
@@ -111,7 +112,7 @@ class ScaleController extends Controller
 
                 //calculate score percentile
                 $z_score = ($score - $scaleAvg) / $scaleSD;
-                $percentile = ($this->cdf($z_score)) * 100;
+                $percentile = (ScaleHelpers::cdf($z_score)) * 100;
 
                 $results = [
                     'score' => $score,
@@ -137,33 +138,6 @@ class ScaleController extends Controller
             
         }
     }
-
-
     
-    private function erf($x) {
-        //TODO: move to helper file somewhere
 
-        //https://www.php.net/manual/en/function.stats-stat-percentile.php#88558
-        $pi = pi();
-
-        $a = (8 * ($pi - 3)) / (3 * $pi * (4 - $pi));
-        $x2 = $x * $x;
-        $ax2 = $a * $x2;
-
-        $num = (4/$pi) + $ax2;
-        $denom = 1 + $ax2;
-
-        $inner = (-$x2) * $num/$denom;
-        $erf2 = 1 - exp($inner);
-
-        return sqrt($erf2);
-    }
-
-    private function cdf($n) {
-        if ($n < 0) {
-            return (1 - $this->erf($n / sqrt(2))) / 2;
-        } else {
-            return (1 + $this->erf($n / sqrt(2))) / 2;
-        }
-    }
 }
