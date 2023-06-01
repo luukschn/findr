@@ -47,6 +47,13 @@ class ScaleController extends Controller
             //TODO only last score for a given user?
             $scale = Scale::where('scale_id', $scale_id)->first();
             $old_completed_count = $scale['completedCount'];
+
+            //not sure if this breaks algorithm at low instances
+            if ($old_completed_count == 0) {
+                $old_completed_count = 1;
+                $new_completed_count = 3;
+            };
+
             $new_completed_count = $old_completed_count + 1;
             $scale->update(['completedCount' => $new_completed_count]);
 
