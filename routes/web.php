@@ -36,9 +36,6 @@ Route::get('about', function () {
 // Route::get('/token', function (Request $request) {
 // })
 
-// Route::post('submit-scale', [ScaleController::class, 'submit']); //need to ensure that this can parse information dynamically and that it cannot parse content via a normal post request which doesnt
-// fit the scale formats
-
 /* user management */
 Route::get('login', function () {
     if (Auth::check()) {
@@ -159,7 +156,10 @@ Route::get('scale/{scale_id}', function($scale_id) {
         // } else {
         //     return route('show_scale_results', ['scale_id' => $scale_id, 'user_id', Auth::id()]);
         // }
-        return app(ScaleController::class)->show_results_individual($scale_id, Auth::id());
+        $controller = app(ScaleController::class);
+        $response = $controller->callAction('show_results_individual', [$scale_id, Auth::id()]);
+        return $response->render();
+        // return app(ScaleController::class)->show_results_individual($scale_id, Auth::id());
     }
 })->name('scale');
 
