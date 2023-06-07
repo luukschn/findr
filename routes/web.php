@@ -88,36 +88,36 @@ Route::get('research', function (){
 
 /* Friend finder */
 Route::get('finder', function() {
-    $user = User::find(Auth::id());
+    if (Auth::check()) {
+        $user = User::find(Auth::id());
 
-    $data = array();
-    $data['is_admin'] = $user['is_admin'];
+        $data = array();
+        $data['is_admin'] = $user['is_admin'];
 
-    $scales = Scale::get();
-    $scale_results = ScaleResult::get();
+        $scales = Scale::get();
+        $scale_results = ScaleResult::get();
 
-    $data['scaleinfo'] = array();
+        $data['scaleinfo'] = array();
 
-    foreach ($scales as $scale) {
-        $scale_id = $scale['scale_id'];
+        foreach ($scales as $scale) {
+            $scale_id = $scale['scale_id'];
 
-        $scale_result = ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first();
+            $scale_result = ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first();
 
-        if ($scale_result != null){
-            $scale_progress = 'Finished';
-        } else {
-            $scale_progress = 'Not yet completed';
+            if ($scale_result != null){
+                $scale_progress = 'Finished';
+            } else {
+                $scale_progress = 'Not yet completed';
+            }
+
+            $data['scale_info'][] = [
+                'scale_name_official' => $scale['officialName'],
+                'scale_id' => $scale['scale_id'],
+                'scale_progress' => $scale_progress
+            ];
         }
 
-        $data['scale_info'][] = [
-            'scale_name_official' => $scale['officialName'],
-            'scale_id' => $scale['scale_id'],
-            'scale_progress' => $scale_progress
-        ];
-    }
     
-
-    if (Auth::check()) {
         return view('finder.finder_home')->with('data', $data);
     } else {
         return redirect('login');

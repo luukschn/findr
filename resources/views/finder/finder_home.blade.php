@@ -14,7 +14,6 @@
                 foreach ($data['scale_info'] as $scale_details){
                     echo "<tr>";
                     echo "<td>";
-                    // echo "<p>" . $scale_details['scale_name_official'] . " - " . $scale_details['scale_progress'] . "</p>";
                     echo "<a href='/scale/" . $scale_details['scale_id'] . "'>" . $scale_details['scale_name_official'] . " - " . $scale_details['scale_progress'] . "</a>";
                     echo "</td>";
                     echo "</tr>";
@@ -28,7 +27,7 @@
         if ((int)$data['is_admin'] == 1) {
             echo "<div id='admin-add-scale'>";
             echo "<h3>Admin panel</h3>";
-            echo "<a class='btn btn-primary' href='/upload/scale/'>Upload scale</a>";
+            echo "<a class='button-primary' href='/upload/scale/'>Upload scale</a>";
             echo "</div>";
         }
     ?>

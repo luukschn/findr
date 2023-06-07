@@ -11,7 +11,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-11 w-50">
                 <form 
                     id="profile-details"
                     method="post"
@@ -109,7 +109,7 @@
                                 </div>
 
                                 <div class="mt-2">
-                                        <button type="submit" class="button-create me-2">Save changes</button>
+                                        <button type="submit" class="button-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>

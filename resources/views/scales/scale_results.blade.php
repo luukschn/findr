@@ -9,4 +9,6 @@
 <p>Standard Deviation: {{ $results['sd'] }}</p>
 <p>Score percentile: {{ $results['percentile'] }}</p>
 
+<a href="/finder" class="button-primary">Go back</a>
+
 @endsection

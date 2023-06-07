@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <div id="body-container">
+        <div id="body-container" class="container">
             <div id="header-container">
                 @include('layouts.header')
             </div>

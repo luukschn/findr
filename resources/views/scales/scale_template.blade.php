@@ -35,6 +35,7 @@
                     
                     foreach ($data['questions'] as $question) {
                         //question itself
+                        echo "<div class='question'>";
                         echo "<h5>". $question['question_text'] . "</h5>";
                         
                         
@@ -63,6 +64,8 @@
                         }
 
                         $question_counter++;
+
+                        echo "</div>";
                         
                     }
                     
@@ -72,7 +75,7 @@
             </div>
 
             <div class='mt-2'>
-                <button type="submit" class="btn btn-primary">Submit answers</button>
+                <button type="submit" class="button-primary">Submit answers</button>
             </div>
 
             @if($errors->any())

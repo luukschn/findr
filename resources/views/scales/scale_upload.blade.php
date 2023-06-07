@@ -6,31 +6,23 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Add question
             $('#add-question').click(function(e) {
                 e.preventDefault();
 
                 var questionTemplate = $('.question-container:first').clone();
                 questionTemplate.find('input').val(''); // Clear the input field
                 questionTemplate.find('.format-checkbox').prop('checked', false);
-                
-                // var questionIndex = $('.question-container').length;
-                // questionTemplate.find('input[type="hidden"]').attr('name', 'format[' + questionIndex + ']');
-                // questionTemplate.find('input[type="checkbox"]').attr('name', 'format[' + questionIndex + ']');
 
                 $('#questions-container').append(questionTemplate);
             });
 
-        // Remove question
-        $(document).on('click', '.remove-question', function(e) {
-            e.preventDefault();
+        $(document).on('click', '#remove-question', function(e) {
+            if ($('.question-container').length > 1) {
+                e.preventDefault();
 
-            //prevent removal of last question
-            // var questions = document.getElementById(".question-container");
-            // if (questions.getElementsByTagName('*').length > 1) {
-                
-            // }
-            $(this).closest('.question-container').remove();
+                $(this).closest('.question-container').remove();
+            }
+
         });
 
         $('#submit-form').click(function(e) {
@@ -39,10 +31,6 @@
             var questions = $('input[name="questions[]"]').map(function() {
                 return $(this).val();
             }).get();
-
-            // var format = $('input[name="format[]"]').map(function() {
-            //     return $(this).is('checked') ? '1' : '0';
-            // }).get();
 
             var format = [];
 
@@ -96,7 +84,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 w-50">
                 
                 <form
                     role="form"
@@ -130,7 +118,7 @@
 
                         <div class="mb-3 col-md-21">
                             <label class="form-label" for="options">Options</label>
-                            <p>Note: format as CSV, e.g.: "always, sometimes, rarely, never"</p>
+                            <p><i>Note: format as CSV, e.g.: "always, sometimes, rarely, never" </i></p>
                             <input class="form-control" type="text" name="options" id="options" required>
                         </div>
                         
@@ -146,31 +134,13 @@
 
 
                         <p>Questions:</p>
-                        {{-- <div class="question-container">
-                            <input class='form-control' type="text" name="questions[]" placeholder="Enter question">
-                            <br>
-                            <label class="form-check-label" for="format-normal">Normal</label>
-                            <input type="radio" class="form-check-input" name="format[]" value="0" id="format-normal" checked>
-                            <label class="form-check-label" for="format-reversed">Reversed</label>
-                            <input type="radio" class="form-check-input" name="format[]" value="1" id="format-reversed">
-                            <br>
-                            <button class="remove-question">Remove</button>
-                        </div>
-
-                        <div id="questions-container">
-                            <!-- Existing questions will be appended here -->
-                        </div>
-                    <br>
-
-                        <button id="add-question" class='btn btn-primary'>Add Question</button>
-                    </div>--}}
 
                     <div id="questions-container">
                         <div class="question-container">
                             <input class='form-control' type="text" name="questions[]" placeholder="Enter question">
                             <label class="form-check-label" for="format">Reversed scoring</label>
                             <input type="checkbox" class="form-check-input format-checkbox" name="format[]" value="1">
-                            <button class="remove-question">Remove</button>
+                            <button id="remove-question" class="button-tertiary">Remove</button>
                         </div>
                     </div>
 
@@ -178,7 +148,7 @@
                     
                     <br>
                     <div class="mt-2">
-                        <button type="submit" class="btn btn-primary" id="submit-form">Submit Questionnaire</button>
+                        <button type="submit" class="button-primary" id="submit-form">Submit Questionnaire</button>
                     </div>
 
 

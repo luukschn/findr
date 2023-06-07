@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="Login"/>
+                    <input type="submit" class="button-primary" value="Login"/>
                 </td>
             </tr>
         </table>
