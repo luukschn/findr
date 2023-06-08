@@ -138,7 +138,7 @@ class ScaleController extends Controller
                 //TODO alternatively redirect back with error popup that you cannot access this page
                 return redirect('no_access_page');
             } else {
-                return view('login');
+                return view('auth.login');
             }
 
             

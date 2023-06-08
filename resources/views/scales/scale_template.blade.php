@@ -10,9 +10,7 @@
 
     <h3 id="scale-title">{{ $data['scale']['officialName'] }}</h3>
     <p id="scale-explanation">{{ $data['scale']['explanation'] }}</p>
-    <p id="scale-reference" class="small">Source:<br>{{ $data['scale']['reference'] }}</p>
-
-
+    <p id="scale-reference" class='small'>Source:<br>{{ $data['scale']['reference'] }}</p>
 
     <div id="questionnaire">
         <form 

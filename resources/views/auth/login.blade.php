@@ -11,12 +11,12 @@
         <table class="login-form">
             <tr>
                 <td>E-mail</td>
-                <td><input type="text" name="email"/></td>
+                <td><input type="text" name="email" class='form-control'/></td>
             </tr>
         
             <tr>
                 <td>Password</td>
-                <td><input type="password" name="password" /></td>
+                <td><input type="password" name="password" class='form-control'/></td>
             </tr>
             <tr>
                 <td colspan="2">
