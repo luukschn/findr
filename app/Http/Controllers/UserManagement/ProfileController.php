@@ -52,6 +52,10 @@ class ProfileController extends Controller
             //inserting data even if it inst changed. maybe have to do a check for that? this is way simpler though.
             $user_info = $request->validated();
 
+            if($user_info->fails()) {
+                return redirect()->back()->withErrors($user_info)->withInput();
+            }
+
             $user = User::where('id', Auth::id())->first();
             $user->name = $user_info['name'];
             $user->email = $user_info['email'];

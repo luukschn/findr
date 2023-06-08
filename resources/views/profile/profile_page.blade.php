@@ -28,19 +28,28 @@
                                 <div class="mb-3 col-md-6">
                                     <label for="name" class="form-label">Name</label>
                                     <input class="form-control" type="text" id="name" name="name" value="{{ auth()->user()->name }}" autofocus="" required>
-                                    <div class="invalid-tooltip">{{ trans('sentence.required') }}</div>
+                                    
+                                    @error('name')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="email" class="form-label">E-mail</label>
                                     <input class="form-control" type="text" id="email" name="email" value="{{ auth()->user()->email }}" autofocus="" required>
-                                    <div class="invalid-tooltip">{{ trans('sentence.required') }}</div>
+                                
+                                    @error('email')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="dateOfBirth" class="form-label">Date of Birth</label>
                                     <input class="form-control" type="date" id="dateOfBirth" name="dateOfBirth" value="{{ $userInfo['dateOfBirth'] }}" autofocus="" required>
-                                    <div class="invalid-tooltip">{{ trans('sentence.required') }}</div>
+                                    
+                                    @error('dateOfBirth')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- What will happen if i dont select country. does it update the value? ideally want to have the value remembered 
@@ -52,6 +61,10 @@
                                         <option value="1" {{ old('country') == '1' || $userInfo['country'] == '1' ? 'selected' : ''}}>The Netherlands</option>
                                     </select>
                                     <!-- <input class="form-control" type="text" id="country" name="country" value="{{ $userInfo['country'] }}" autofocus="" required>-->
+                                    
+                                    @error('country')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3 col-md-6">
@@ -82,13 +95,20 @@
                                         ?>
 
                                     </select>
+
+                                    @error('location')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                     <!-- <input class="form-control" type="text" id="location" name="location" value="{{ $userInfo['location'] }}" autofocus="" required> -->
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="jobTitle" class="form-label">Job Title</label>
                                     <input class="form-control" type="text" id="jobTitle" name="jobTitle" value="{{ $userInfo['jobTitle'] }}" autofocus="" required>
-                                    <div class="invalid-tooltip">{{ trans('sentence.required') }}</div>
+                                
+                                    @error('jobTitle')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3 col-md-6">
@@ -100,12 +120,19 @@
                                         <option value="3" {{old('gender') == '3' || $userInfo['gender']  == '3' ? 'selected' : ''}}>Other (more refined selection on this coming soon)</option>
                                     </select>
                                     <!-- <input class="form-control" type="text" id="gender" name="gender" value="{{ $userInfo['gender'] }}" autofocus="" required> -->
+                                
+                                    @error('gender')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="bio" class="form-label">Bio</label>
                                     <textarea class="form-control" type="text" id="bio" name="bio" autofocus="" required>{{ $userInfo['bio'] }}</textarea>
-                                    <!-- <div class="invalid-tooltip">{{ trans('sentence.required') }}</div> -->
+                                
+                                    @error('bio')
+                                        <div class="error">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="mt-2">
@@ -114,7 +141,7 @@
                             </div>
                         </div>
 
-                        @if ($errors->any())
+                        {{-- @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -122,7 +149,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        @endif
+                        @endif --}}
 
                         
                     </div>
