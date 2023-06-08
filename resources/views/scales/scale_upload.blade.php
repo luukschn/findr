@@ -68,12 +68,50 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    window.location.href = '/finder';
+                    if (response.errors) {
+                        // $('#errors-container').html(response.errors);
+                        displayErrors(response.errors);
+                    } else {
+                        window.location.href = '/finder';
+                    }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error: ', error);
+                    if (xhr.status === 422) {
+                        var errors = xhr.responseJSON.errors;
+
+                        // var errorsHtml = '<ul>';
+                        // $.each(errors, function(key, value) {
+                        //     errorsHtml += '<li>' + value + '</li>';
+                        // });
+
+                        
+                        // errorsHtml += '</ul>';
+
+                        // $('#errors-container').html(errorsHtml);
+
+                        displayErrors(errors);
+
+                    } else {
+                        console.error('Error: ', error);
+                    }
+                    
                 }
             });
+
+            function displayErrors(errors) {
+                $('form-group').removeClass('has-error');
+                $('.help-block').remove();
+
+                $.each(errors, function(field, messages) {
+                    var input = $('[name="' + field + '"]');
+                    var formGroup = input.closest('.form-group');
+
+                    formGroup.addClass('has-error');
+                    $.each(messages, function(index, message) {
+                        formGroup.append('<span class="help-block">' + message + '</span>');
+                    });
+                });
+            }
         });
     });
     </script>
@@ -93,41 +131,43 @@
                     enctype="multipart/form-data"
                     >
 
+                    {{-- TODO custom error notifications per item --}}
+
                     <meta name="csrf-token" content="{{ csrf_token() }}">
 
                     <div class="card-body">
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="internalName">Internal Name</label>
                             <input class="form-control" type="text" name="internalName" id="internalName" required>
                         </div>
 
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="officialName">Official Name</label>
                             <input class="form-control" type="text" name="officialName" id="officialName" required>
                         </div>
 
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="reference">Reference</label>
                             <input class="form-control" type="text" name="reference" id="reference" required>
                         </div>
 
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="explanation">Explanation</label>
                             <textarea class="form-control" type="text" name="explanation" id="explanation" required></textarea>
                         </div>
 
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="options">Options</label>
                             <p><i>Note: format as CSV, e.g.: "always, sometimes, rarely, never" </i></p>
                             <input class="form-control" type="text" name="options" id="options" required>
                         </div>
                         
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="referenceMean">Reference Mean</label>
                             <input class="form-control" type="text" name="referenceMean" id="referenceMean" required>
                         </div>
 
-                        <div class="mb-3 col-md-21">
+                        <div class="mb-3 col-md-21 form-group">
                             <label class="form-label" for="referenceSD">Reference Standard Deviation</label>
                             <input class="form-control" type="text" name="referenceSD" id="referenceSD" required>
                         </div>
@@ -136,7 +176,7 @@
                         <p>Questions:</p>
 
                     <div id="questions-container">
-                        <div class="question-container">
+                        <div class="question-container form-group">
                             <input class='form-control' type="text" name="questions[]" placeholder="Enter question">
                             <label class="form-check-label" for="format">Reversed scoring</label>
                             <input type="checkbox" class="form-check-input format-checkbox" name="format[]" value="1">
@@ -145,6 +185,8 @@
                     </div>
 
                     <button class="btn btn-secondary" id="add-question">Add Question</button>
+
+                    <div class="mt-2" id="errors-container"></div>
                     
                     <br>
                     <div class="mt-2">
