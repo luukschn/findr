@@ -1,8 +1,33 @@
 <?php
 
 namespace App\Helpers;
+use Illuminate\Http\Request;
 
 class ScaleHelpers {
+    public static function calculate_scale_result(Request $request) {
+        //TODO: maybe a lot quicker if I send array of questions and formats rather than entire request
+
+        $internal_name = $request->internalName;
+        $question_count = $request->questionCount;
+        $option_count = $request->optionCount;
+
+        $result = 0;
+
+        for ($i = 0; $i <= $question_count; $i++) {
+            
+            //format normal
+            if ($request->input($internal_name . "-format-" . $i) == "n") {
+                $result += (int)$request->input($internal_name . "-" . $i);
+            } 
+            //reversed format
+            else {
+                $result += $option_count - (int)$request->input($internal_name . "-" . $i) + 1;
+            }
+        }
+
+        return $result;
+    }
+
     public static function erf($x) {
 
         //https://www.php.net/manual/en/function.stats-stat-percentile.php#88558

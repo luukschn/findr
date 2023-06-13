@@ -19,24 +19,9 @@ class ScaleController extends Controller
         */
 
         $scale_id = $request->scale_id;
-        $internal_name = $request->internalName;
-        $question_count = $request->questionCount; 
-        $option_count = $request->optionCount;
         $officalName = $request->officialName;
 
-        $result = 0;
-        for ($i=0; $i <= $question_count; $i++) {
-            if ($request->input($internal_name . "-format-" . $i) == "n") {
-                //format normal, options can just be added to total
-                $result += (int)$request->input($internal_name . "-" . $i);
-            } else {
-                //format reversed, values have to be reversed
-
-                //TODO make reversal function separate
-                $result += $option_count - (int)$request->input($internal_name . "-" . $i) + 1;
-            }
-        }
-        
+        $result = ScaleHelpers::calculate_scale_result($request);
 
         //scales table processing
         if (Scale::where('scale_id', $scale_id)->exists()) {
@@ -106,8 +91,8 @@ class ScaleController extends Controller
         return $this->show_results_individual($scale_id, Auth::id());
     }
 
-    public function show_results_individual($scale_id, $user_id) {
-        if (Auth::check()) {
+    public function show_results_individual($scale_id, $user_id, $no_auth_score = 0) {
+        if (Auth::check() && (Auth::id() == $user_id)) {
 
             $scaleResult = ScaleResult::where('user_id', $user_id)->where('scale_id', $scale_id)->first();
             $scale = Scale::where('scale_id', $scale_id)->first();
@@ -134,16 +119,46 @@ class ScaleController extends Controller
             }
 
         } else {
-            if (Auth::id() != $user_id) {
+            if ($user_id == -1) {
+                
+                $score = $no_auth_score;
+                $scale = Scale::where('scale_id', $scale_id)->first();
+
+                if ($scale != null) {
+                    $scaleAvg = $scale->referenceMean;
+                    $scaleSD = $scale->referenceSD;
+    
+                    //calculate score percentile
+                    $z_score = ($score - $scaleAvg) / $scaleSD;
+                    $percentile = (ScaleHelpers::cdf($z_score)) * 100;
+    
+                    $results = [
+                        'score' => $score,
+                        'average' => $scaleAvg, 
+                        'sd' => $scaleSD,
+                        'percentile' => $percentile
+                    ];
+                }
+
+                return view('scales.scale_results')->with('results', $results);
+
+            } else {
                 //TODO alternatively redirect back with error popup that you cannot access this page
                 return redirect('no_access_page');
-            } else {
-                return view('auth.login');
-            }
-
-            
+            } 
             
         }
+    }
+
+
+    public function process_scale_results_no_auth(Request $request) {
+
+        $scale_id = $request->scale_id;
+
+        $result = ScaleHelpers::calculate_scale_result($request);
+
+        //using nonexistant userId to access function. Maybe not the best fix.
+        $this->show_results_individual($scale_id, -1, $result);
     }
     
 

@@ -157,16 +157,18 @@ Route::get('scale/{scale_id}', function($scale_id) {
     }
 })->name('scale');
 
-Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
+// Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
+Route::post('submit-scale', function() {
+    $ScaleController = app(ScaleController::class);
+    if (Auth::check()) {
+        $ScaleController->callAction('process_scale_results');
+    } else {
+        $ScaleController->callAction('process_scale_result_no_auth');
+    }
+});
 
 Route::get('scale/{scale_id}/result/{user_id}', [ScaleController::class, 'show_results_individual'])->name('show_scale_results');
-// Route::get('finder/{scale_id}', function() {
-//     if (Auth::check()) {
-//         return view('finder.scale', $scale_id); //figure out how to display correct scale based on id
-//     } else {
-//         return redirect('login');
-//     }
-// })
+
 Route::get('upload/scale', function() {
     $user = User::find(Auth::id()); //not sure if this should be done here
     if ($user != null) {
