@@ -4,6 +4,9 @@
 
 @section('content')
 <div id="finder-home-parent">
+    <div class='child'>
+        <a href='/finder/match' class='button-primary'>Match me</a>
+    </div>
     <div class='child inline-block-child'>
         <h3>Placeholder explanatory content</h3>
     </div>

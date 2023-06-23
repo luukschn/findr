@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\MatchingController;
 use App\Http\Controllers\ScaleController;
 use App\Http\Controllers\ScaleUploadController;
 use App\Http\Controllers\UserManagement\RegistrationController;
@@ -123,23 +124,49 @@ Route::get('finder', function() {
         return redirect('login');
     }
 })->name('finder');
+Route::get('finder/match', [MatchingController::class, 'match_individual']);
 
 
 /* Scales */
 Route::get('scale/{scale_id}', function($scale_id) {
+    //TODO improve structure
+    if (Auth::check()) {
+        if (ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first() == null) {
+            // return view('scales.scale-' . $scale_id);
+            $data = array();
+    
+            $data['scale'] = Scale::where('scale_id', $scale_id)->first();
+            $data['questions'] = ScaleQuestion::where('scale_id', $scale_id)->get();
+    
+            //parse the CSV values and get the amount of options:
+            $data['scale']['option-count'] = (substr_count($data['scale']['options'], ',') + 1);
+            
+            $options_array = explode(',', $data['scale']['options']);
+    
+            for ($i = 0; $i <= (count($options_array) - 1); $i++) {
+                $options_array[$i] = trim($options_array[$i]);
+            }
+    
+            $data['scale']['options'] = $options_array;
+    
+            return view('scales.scale_template')->with('data', $data);
+    
+        } else {
+            
+            $controller = app(ScaleController::class);
+            $response = $controller->callAction('show_results_individual', [$scale_id, Auth::id()]);
+            return $response->render();
+        }
 
-    if (ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first() == null) {
-        // return view('scales.scale-' . $scale_id);
+    } else {
         $data = array();
-
+    
         $data['scale'] = Scale::where('scale_id', $scale_id)->first();
         $data['questions'] = ScaleQuestion::where('scale_id', $scale_id)->get();
 
         //parse the CSV values and get the amount of options:
-        
         $data['scale']['option-count'] = (substr_count($data['scale']['options'], ',') + 1);
         
-
         $options_array = explode(',', $data['scale']['options']);
 
         for ($i = 0; $i <= (count($options_array) - 1); $i++) {
@@ -149,21 +176,18 @@ Route::get('scale/{scale_id}', function($scale_id) {
         $data['scale']['options'] = $options_array;
 
         return view('scales.scale_template')->with('data', $data);
-
-    } else {
-        $controller = app(ScaleController::class);
-        $response = $controller->callAction('show_results_individual', [$scale_id, Auth::id()]);
-        return $response->render();
     }
+
 })->name('scale');
 
 // Route::post('submit-scale', [ScaleController::class, 'process_scale_results']);
-Route::post('submit-scale', function() {
+Route::post('submit-scale', function(Illuminate\Http\Request $request) {
     $ScaleController = app(ScaleController::class);
+    // $formData = $request->all();
     if (Auth::check()) {
-        $ScaleController->callAction('process_scale_results');
+        $ScaleController->callAction('process_scale_results', [$request]);
     } else {
-        $ScaleController->callAction('process_scale_result_no_auth');
+        $ScaleController->callAction('process_scale_results_no_auth', [$request]);
     }
 });
 

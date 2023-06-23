@@ -115,7 +115,7 @@ class ScaleController extends Controller
 
                 return view('scales.scale_results')->with('results', $results);
             } else {
-                return redirect('scale/' . $scale_id);
+                return view('scale/' . $scale_id);
             }
 
         } else {
@@ -144,12 +144,12 @@ class ScaleController extends Controller
 
             } else {
                 //TODO alternatively redirect back with error popup that you cannot access this page
-                return redirect('no_access_page');
+                // return view('no_access_page');
+                return view('homepage');
             } 
             
         }
     }
-
 
     public function process_scale_results_no_auth(Request $request) {
 
