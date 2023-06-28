@@ -44,7 +44,7 @@ Route::get('login', function () {
     } else {
         return view('auth.login');
     }
-});
+})->name('login');
 Route::post('user/login', [LoginController::class, 'login']);
 
 Route::get('logout', function() {
@@ -78,8 +78,12 @@ Route::middleware('web')->group(function () {
     
 // });
 
-Route::get('profile/{id}', [ProfileController::class, 'get_profile'])->name('profile.show');
-Route::post('profile/update', [ProfileController::class, 'update_profile']);
+// apparently automatically redirects to login view
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('profile/{id}', [ProfileController::class, 'get_profile'])->name('profile.show');
+    Route::post('profile/update', [ProfileController::class, 'update_profile']);
+});
+
 
 /* Research pages */
 Route::get('research', function (){
@@ -88,8 +92,8 @@ Route::get('research', function (){
 
 
 /* Friend finder */
-Route::get('finder', function() {
-    if (Auth::check()) {
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('finder', function() {
         $user = User::find(Auth::id());
 
         $data = array();
@@ -105,6 +109,7 @@ Route::get('finder', function() {
 
             $scale_result = ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first();
 
+            //TODO move to view
             if ($scale_result != null){
                 $scale_progress = 'Finished';
             } else {
@@ -120,16 +125,16 @@ Route::get('finder', function() {
 
     
         return view('finder.finder_home')->with('data', $data);
-    } else {
-        return redirect('login');
-    }
-})->name('finder');
-Route::get('finder/match', [MatchingController::class, 'match_individual']);
+    })->name('finder');
+    Route::get('finder/match', [MatchingController::class, 'match_individual']);
+});
 
 
 /* Scales */
-Route::get('scale/{scale_id}', function($scale_id) {
+Route::get('scale/{scale_id}', function(Scale $scale) {
     //TODO improve structure
+    $scale_id = $scale->scale_id;
+    
     if (Auth::check()) {
         if (ScaleResult::where('scale_id', $scale_id)->where('user_id', Auth::id())->first() == null) {
             // return view('scales.scale-' . $scale_id);
@@ -204,6 +209,6 @@ Route::get('upload/scale', function() {
     } else {
         return redirect('login');
     }
-});
+})->name('upload_scale');
 Route::post('upload/scale/submit', [ScaleUploadController::class, 'process_scale_upload']);
 
